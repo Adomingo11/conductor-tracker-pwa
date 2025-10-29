@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Conductor Tracker</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Conductor Tracker">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4fd1c7">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/assets/manifest-BE3rfUmX.json">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM0ZmQxYzciLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMWExZjJlIj4KPHA+PHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIi8+CjwvcD4KPC9zdmc+Cjwvc3ZnPg==">
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM0ZmQxYzciLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMWExZjJlIj4KPHA+PHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIi8+CjwvcD4KPC9zdmc+Cjwvc3ZnPg==">
+  <script type="module" crossorigin src="/assets/index-xzvYLAwT.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-cG86YAJs.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navigation">
+            <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+            <button class="nav-btn" data-view="registro">Registro Diario</button>
+            <button class="nav-btn" data-view="historial">📋 Historial</button>
+            <button class="nav-btn" data-view="informes">Informes</button>
+            <button class="nav-btn" data-view="ai">🤖 IA</button>
+            <button class="nav-btn" data-view="ajustes">Ajustes</button>
+        </nav>
+
+        <main class="main-content">
+            <div id="dashboard-view" class="view active">
+                <div class="welcome-section">
+                    <h1>Bienvenido al Panel de Control</h1>
+                    <p>Aquí tienes un resumen de tu actividad total.</p>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-circle">
+                            <span class="metric-value" id="total-km">0</span>
+                            <span class="metric-unit">km</span>
+                        </div>
+                        <h3>Km Totales</h3>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-circle">
+                            <span class="metric-value" id="total-carreras">0</span>
+                            <span class="metric-unit">carreras</span>
+                        </div>
+                        <h3>Carreras Totales</h3>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-circle">
+                            <span class="metric-value" id="total-ganancias">0</span>
+                            <span class="metric-unit">€</span>
+                        </div>
+                        <h3>Ganancia Neta Total</h3>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" id="registrar-nuevo-dia">Registrar Nuevo Día</button>
+            </div>
+
+            <div id="registro-view" class="view">
+                <h2>Registro Diario</h2>
+                <form id="registro-form" class="registro-form">
+                    <div class="form-section">
+                        <label for="fecha-registro">Fecha del Registro</label>
+                        <input type="date" id="fecha-registro" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="km-recorridos">Km Recorridos</label>
+                            <input type="number" id="km-recorridos" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="num-carreras">Nº de Carreras Totales</label>
+                            <input type="number" id="num-carreras" min="0" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Uber</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="uber-app">Uber App</label>
+                                <input type="number" id="uber-app" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="uber-propinas">Propinas Uber</label>
+                                <input type="number" id="uber-propinas" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>FreeNow</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="freenow-app">App</label>
+                                <input type="number" id="freenow-app" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="freenow-tarjeta">Tarjeta</label>
+                                <input type="number" id="freenow-tarjeta" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="freenow-efectivo">Efectivo</label>
+                                <input type="number" id="freenow-efectivo" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="freenow-propinas">Propinas</label>
+                                <input type="number" id="freenow-propinas" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Taxi Convencional</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taxi-tarjeta">Tarjeta</label>
+                                <input type="number" id="taxi-tarjeta" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="taxi-efectivo">Efectivo</label>
+                                <input type="number" id="taxi-efectivo" min="0" step="0.01" value="0">
+                                <span class="currency">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Gastos</h3>
+                        <div class="form-group">
+                            <label for="combustible">Combustible</label>
+                            <input type="number" id="combustible" min="0" step="0.01" value="0">
+                            <span class="currency">€</span>
+                        </div>
+                    </div>
+
+                    <div class="calculation-preview">
+                        <h4>Vista Previa del Cálculo</h4>
+                        <div class="calc-line">Ganancia Bruta: <span id="ganancia-bruta">0.00</span>€</div>
+                        <div class="calc-line">- Comisión Vehículo (52%): <span id="comision-vehiculo">0.00</span>€</div>
+                        <div class="calc-line">- Costo Kilometraje: <span id="costo-km">0.00</span>€</div>
+                        <div class="calc-line">- Comisión FreeNow Efectivo (6%): <span id="comision-freenow">0.00</span>€</div>
+                        <div class="calc-line">+ Gastos Combustible: <span id="gastos-combustible">0.00</span>€</div>
+                        <div class="calc-total">Ganancia Neta: <span id="ganancia-neta">0.00</span>€</div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Guardar y Calcular Día</button>
+                </form>
+            </div>
+
+            <div id="historial-view" class="view">
+                <h2>📋 Historial de Registros</h2>
+                <p>Consulta y filtra todos tus registros diarios.</p>
+
+                <div class="historial-filters">
+                    <div class="filter-row">
+                        <div class="form-group">
+                            <label for="fecha-desde">Desde:</label>
+                            <input type="date" id="fecha-desde">
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha-hasta">Hasta:</label>
+                            <input type="date" id="fecha-hasta">
+                        </div>
+                        <div class="filter-actions">
+                            <button id="aplicar-filtros" class="btn-primary">Filtrar</button>
+                            <button id="limpiar-filtros" class="btn-secondary">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="historial-content" class="historial-content">
+                    <div class="historial-placeholder">
+                        <p>Selecciona un rango de fechas o deja vacío para ver todos los registros.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="informes-view" class="view">
+                <h2>Informes de Actividad</h2>
+                <p>Analiza tus ganancias y rendimiento por semana o mes.</p>
+                
+                <div class="filter-tabs">
+                    <button class="tab-btn active" data-period="semanal">Semanal</button>
+                    <button class="tab-btn" data-period="mensual">Mensual</button>
+                </div>
+
+                <div class="informes-content">
+                    <div class="no-data">
+                        <p>No hay datos registrados para mostrar informes.</p>
+                        <p>Empieza por añadir un registro diario.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai-view" class="view">
+                <h2>🤖 Asistente IA</h2>
+                <p>Análisis inteligente, predicciones y chat personalizado para optimizar tus ganancias.</p>
+
+                <div id="ai-loading" class="ai-loading" style="display: none;">Procesando...</div>
+                
+                <div class="ai-status-section">
+                    <div id="ai-status" class="ai-status inactive">❌ IA No Configurada</div>
+                </div>
+
+                <div id="ai-config-section" class="ai-config-section">
+                    <h3>🔧 Configuración de IA</h3>
+                    <p>Para usar las funciones de IA, necesitas una API Key de Google AI Studio (gratuita).</p>
+                    <div class="config-steps">
+                        <ol>
+                            <li>Ve a <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></li>
+                            <li>Crea una API Key gratuita</li>
+                            <li>Pégala aquí abajo</li>
+                        </ol>
+                    </div>
+                    <div class="form-group">
+                        <label for="ai-api-key">API Key de Google AI Studio:</label>
+                        <input type="password" id="ai-api-key" placeholder="Pega tu API Key aquí">
+                    </div>
+                    <button id="configure-ai" class="btn-primary">Configurar IA</button>
+                </div>
+
+                <div id="ai-features-section" class="ai-features-section" style="display: none;">
+                    <div class="ai-tabs">
+                        <button class="ai-tab-btn active" data-tab="analysis">📊 Análisis</button>
+                        <button class="ai-tab-btn" data-tab="predictions">🔮 Predicciones</button>
+                        <button class="ai-tab-btn" data-tab="chat">💬 Chat IA</button>
+                    </div>
+
+                    <div id="ai-analysis-tab" class="ai-tab-content active">
+                        <div id="ai-analysis-container" class="ai-analysis-container">
+                            <div class="analysis-placeholder">
+                                <p>Haz clic en "Analizar Datos" para obtener insights inteligentes sobre tu actividad.</p>
+                                <button id="analyze-data" class="btn-primary">📊 Analizar Datos</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ai-predictions-tab" class="ai-tab-content">
+                        <div id="ai-predictions-container" class="ai-predictions-container">
+                            <div class="predictions-placeholder">
+                                <p>Genera predicciones basadas en tus patrones de trabajo.</p>
+                                <button id="generate-predictions" class="btn-primary">🔮 Generar Predicciones</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ai-chat-tab" class="ai-tab-content">
+                        <div class="ai-chat-container">
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="chat-message assistant">
+                                    <div class="message-content">
+                                        <div class="message-text">¡Hola! Soy tu asistente de IA. Puedes preguntarme sobre tus ganancias, tendencias, o pedirme consejos para mejorar tus ingresos. ¿En qué puedo ayudarte?</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="chat-form" class="chat-form">
+                                <input type="text" id="chat-input" placeholder="Pregúntame sobre tus ganancias, tendencias, consejos..." required>
+                                <button type="submit" class="btn-primary">Enviar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ajustes-view" class="view">
+                <h2>Ajustes</h2>
+                <p>Personaliza tu perfil y planifica tus días no laborables.</p>
+
+                <div class="ajustes-section">
+                    <h3>Perfil del Conductor</h3>
+                    <div class="form-group">
+                        <label for="conductor-nombre">Nombre</label>
+                        <input type="text" id="conductor-nombre" placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="conductor-apellido">Apellido</label>
+                        <input type="text" id="conductor-apellido" placeholder="Tu apellido">
+                    </div>
+                    <button class="btn-primary" id="guardar-perfil">Guardar Perfil</button>
+                </div>
+
+                <div class="ajustes-section">
+                    <h3>Día Libre Semanal</h3>
+                    <select id="dia-libre">
+                        <option value="">Ninguno</option>
+                        <option value="lunes">Lunes</option>
+                        <option value="martes">Martes</option>
+                        <option value="miercoles">Miércoles</option>
+                        <option value="jueves">Jueves</option>
+                        <option value="viernes">Viernes</option>
+                        <option value="sabado">Sábado</option>
+                        <option value="domingo">Domingo</option>
+                    </select>
+                    <div class="button-group">
+                        <button class="btn-primary" id="guardar-dia-libre">Guardar Día Libre</button>
+                        <button class="btn-danger" id="limpiar-dia-libre">Limpiar Día Libre</button>
+                    </div>
+                </div>
+
+                <div class="ajustes-section">
+                    <h3>Período de Vacaciones</h3>
+                    <div class="form-group">
+                        <label for="vacaciones-inicio">Inicio de Vacaciones</label>
+                        <input type="date" id="vacaciones-inicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="vacaciones-fin">Fin de Vacaciones</label>
+                        <input type="date" id="vacaciones-fin">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn-primary" id="guardar-vacaciones">Guardar Vacaciones</button>
+                        <button class="btn-danger" id="limpiar-vacaciones">Limpiar Vacaciones</button>
+                    </div>
+                </div>
+
+                <div class="ajustes-section">
+                    <h3>Resumen de Configuración Actual</h3>
+                    <div class="config-summary">
+                        <p><strong>Día Libre Semanal:</strong> <span id="resumen-dia-libre">Ninguno configurado</span></p>
+                        <p><strong>Período de Vacaciones:</strong> <span id="resumen-vacaciones">Ninguno configurado</span></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+
+</body>
+</html>
