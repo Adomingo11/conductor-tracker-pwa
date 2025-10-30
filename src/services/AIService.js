@@ -5,15 +5,19 @@ export class AIService {
     this.genAI = null;
     this.model = null;
     this.isInitialized = false;
+    this.apiKey = 'AIzaSyAtdlOnTQNdWz7Um-lsaIVOL-pg0Wa2MmI'; // API Key integrada
   }
 
-  async initialize(apiKey) {
+  async initialize(apiKey = null) {
     try {
-      if (!apiKey) {
+      // Usar la API key integrada o la proporcionada
+      const keyToUse = apiKey || this.apiKey;
+      
+      if (!keyToUse) {
         throw new Error('API Key de Google AI Studio es requerida');
       }
 
-      this.genAI = new GoogleGenerativeAI(apiKey);
+      this.genAI = new GoogleGenerativeAI(keyToUse);
       this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
       this.isInitialized = true;
       
@@ -23,6 +27,11 @@ export class AIService {
       console.error('Error initializing AI Service:', error);
       throw error;
     }
+  }
+
+  // Método para inicializar automáticamente con la API key integrada
+  async autoInitialize() {
+    return await this.initialize();
   }
 
   /**

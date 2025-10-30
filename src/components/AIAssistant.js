@@ -86,18 +86,28 @@ nfigureAI() {
 
   async checkAIConfiguration() {
     try {
-      const savedKey = localStorage.getItem('ai_configured');
-      if (savedKey) {
-        const apiKey = atob(savedKey);
-        await this.aiService.initialize(apiKey);
-        this.isConfigured = true;
-        this.updateAIStatus();
-        
-        // Cargar análisis previo si existe
-        const savedAnalysis = localStorage.getItem('ai_last_analysis');
-        if (savedAnalysis) {
-          this.currentAnalysis = JSON.parse(savedAnalysis);
-          this.displayAnalysis(this.currentAnalysis);
+      // Intentar inicializar automáticamente con la API key integrada
+      await this.aiService.autoInitialize();
+      this.isConfigured = true;
+      this.updateAIStatus();
+      
+      // Ocultar sección de configuración ya que está preconfigurada
+      const configSection = document.getElementById('ai-config-section');
+      if (configSection) {
+        configSection.style.display = 'none';
+      }
+      
+      // Mostrar sección de funcionalidades
+      const featuresSection = document.getElementById('ai-features-section');
+      if (featuresSection) {
+        featuresSection.style.display = 'block';
+      }
+      
+      // Cargar análisis previo si existe
+      const savedAnalysis = localStorage.getItem('ai_last_analysis');
+      if (savedAnalysis) {
+        this.currentAnalysis = JSON.parse(savedAnalysis);
+        this.displayAnalysis(this.currentAnalysis);
         }
       }
     } catch (error) {
@@ -114,8 +124,8 @@ nfigureAI() {
     
     if (statusElement) {
       statusElement.textContent = this.isConfigured ? 
-        '✅ IA Configurada y Lista' : 
-        '❌ IA No Configurada';
+        '✅ IA Preconfigurada y Lista' : 
+        '❌ IA No Disponible';
       statusElement.className = this.isConfigured ? 'ai-status active' : 'ai-status inactive';
     }
     
