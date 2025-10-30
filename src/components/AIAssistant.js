@@ -54,8 +54,9 @@ export class AIAssistant {
         this.generatePredictions();
       });
     }
-  }  async co
-nfigureAI() {
+  }
+
+  async configureAI() {
     try {
       const apiKeyInput = document.getElementById('ai-api-key');
       const apiKey = apiKeyInput?.value?.trim();
@@ -108,7 +109,6 @@ nfigureAI() {
       if (savedAnalysis) {
         this.currentAnalysis = JSON.parse(savedAnalysis);
         this.displayAnalysis(this.currentAnalysis);
-        }
       }
     } catch (error) {
       console.error('Error checking AI configuration:', error);
@@ -215,8 +215,9 @@ nfigureAI() {
       console.error('Error in full analysis:', error);
       this.showError(error.message || 'Error al realizar análisis completo');
     }
-  }  async 
-generatePredictions() {
+  }
+
+  async generatePredictions() {
     if (!this.isConfigured) {
       this.showError('Configura la IA primero');
       return;

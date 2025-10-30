@@ -1,44 +1,44 @@
 :root {
-  /* Dark Theme Colors */
-  --bg-primary: #1a1f2e;
-  --bg-secondary: #252b3d;
-  --bg-card: #2d3548;
-  --bg-overlay: rgba(26, 31, 46, 0.95);
+  /* Modern Minimal Colors */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #262626;
+  --bg-overlay: rgba(15, 15, 15, 0.95);
 
   /* Text Colors */
   --text-primary: #ffffff;
-  --text-secondary: #a0a9c0;
-  --text-muted: #6b7280;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
 
   /* Accent Colors */
-  --accent-primary: #4fd1c7;
-  --accent-secondary: #3b82f6;
-  --accent-hover: #45b8af;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #0ea5e9;
+  --accent-hover: #0891b2;
 
   /* Status Colors */
-  --success-color: #10b981;
+  --success-color: #22c55e;
   --error-color: #ef4444;
   --warning-color: #f59e0b;
   --info-color: #06b6d4;
 
   /* Border and Shadow */
-  --border-color: #3d4458;
-  --border-light: #4b5563;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --border-color: #404040;
+  --border-light: #525252;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 
   /* Layout */
-  --header-height: 70px;
+  --header-height: 60px;
   --sidebar-width: 280px;
   --container-max-width: 1200px;
-  --border-radius: 8px;
-  --border-radius-lg: 12px;
+  --border-radius: 12px;
+  --border-radius-lg: 16px;
 
   /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -71,11 +71,11 @@ body {
 /* Navigation Layout */
 .navigation {
   background-color: var(--bg-secondary);
-  padding: 1rem 2rem;
+  backdrop-filter: blur(20px);
+  padding: 0.75rem 2rem;
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -85,32 +85,30 @@ body {
 
 .nav-btn {
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: none;
   color: var(--text-secondary);
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: all var(--transition-normal);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 
 .nav-btn:hover {
   background-color: var(--bg-card);
   color: var(--text-primary);
-  border-color: var(--border-light);
-  transform: translateY(-1px);
 }
 
 .nav-btn.active {
-  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
-  border-color: var(--accent-primary);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-md);
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary);
 }
 
 /* Main Content Layout */
@@ -163,26 +161,30 @@ body {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(10px);
 }
 
 .metric-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.15);
 }
 
 .metric-circle {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
   position: relative;
+  box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
 }
 
 .metric-value {
