@@ -17,7 +17,7 @@ export class AIAssistant {
     // Configuración de API Key
     const configureBtn = document.getElementById('configure-ai');
     const apiKeyInput = document.getElementById('ai-api-key');
-    
+
     if (configureBtn) {
       configureBtn.addEventListener('click', () => {
         this.configureAI();
@@ -27,7 +27,7 @@ export class AIAssistant {
     // Chat assistant
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
-    
+
     if (chatForm) {
       chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -60,25 +60,25 @@ export class AIAssistant {
     try {
       const apiKeyInput = document.getElementById('ai-api-key');
       const apiKey = apiKeyInput?.value?.trim();
-      
+
       if (!apiKey) {
         throw new Error('Por favor, introduce tu API Key de Google AI Studio');
       }
 
       this.showLoading('Configurando IA...');
-      
+
       await this.aiService.initialize(apiKey);
-      
+
       // Guardar API Key en localStorage (encriptada básicamente)
       localStorage.setItem('ai_configured', btoa(apiKey));
-      
+
       this.isConfigured = true;
       this.updateAIStatus();
       this.showSuccess('IA configurada correctamente');
-      
+
       // Realizar análisis inicial
       await this.performInitialAnalysis();
-      
+
     } catch (error) {
       console.error('Error configuring AI:', error);
       this.showError(error.message || 'Error al configurar la IA');
@@ -91,19 +91,19 @@ export class AIAssistant {
       await this.aiService.autoInitialize();
       this.isConfigured = true;
       this.updateAIStatus();
-      
+
       // Ocultar sección de configuración ya que está preconfigurada
       const configSection = document.getElementById('ai-config-section');
       if (configSection) {
         configSection.style.display = 'none';
       }
-      
+
       // Mostrar sección de funcionalidades
       const featuresSection = document.getElementById('ai-features-section');
       if (featuresSection) {
         featuresSection.style.display = 'block';
       }
-      
+
       // Cargar análisis previo si existe
       const savedAnalysis = localStorage.getItem('ai_last_analysis');
       if (savedAnalysis) {
@@ -121,18 +121,18 @@ export class AIAssistant {
     const statusElement = document.getElementById('ai-status');
     const configSection = document.getElementById('ai-config-section');
     const featuresSection = document.getElementById('ai-features-section');
-    
+
     if (statusElement) {
-      statusElement.textContent = this.isConfigured ? 
-        '✅ IA Preconfigurada y Lista' : 
+      statusElement.textContent = this.isConfigured ?
+        '✅ IA Preconfigurada y Lista' :
         '❌ IA No Disponible';
       statusElement.className = this.isConfigured ? 'ai-status active' : 'ai-status inactive';
     }
-    
+
     if (configSection) {
       configSection.style.display = this.isConfigured ? 'none' : 'block';
     }
-    
+
     if (featuresSection) {
       featuresSection.style.display = this.isConfigured ? 'block' : 'none';
     }
@@ -140,32 +140,32 @@ export class AIAssistant {
 
   async performInitialAnalysis() {
     if (!this.isConfigured) return;
-    
+
     try {
       this.showLoading('Realizando análisis inicial...');
-      
+
       const registros = await this.dbService.getAllRegistros();
       const conductor = await this.dbService.getConductor();
-      
+
       if (registros.length === 0) {
         this.showInfo('Añade algunos registros para obtener análisis de IA');
         return;
       }
 
       const analysis = await this.aiService.analyzeDriverData(registros, conductor);
-      
+
       this.currentAnalysis = {
         timestamp: new Date().toISOString(),
         analysis,
         registrosCount: registros.length
       };
-      
+
       // Guardar análisis
       localStorage.setItem('ai_last_analysis', JSON.stringify(this.currentAnalysis));
-      
+
       this.displayAnalysis(this.currentAnalysis);
       this.hideLoading();
-      
+
     } catch (error) {
       console.error('Error in initial analysis:', error);
       this.showError('Error al realizar análisis inicial');
@@ -177,26 +177,26 @@ export class AIAssistant {
       this.showError('Configura la IA primero');
       return;
     }
-    
+
     try {
       this.showLoading('Analizando todos tus datos...');
-      
+
       const registros = await this.dbService.getAllRegistros();
       const conductor = await this.dbService.getConductor();
-      
+
       if (registros.length === 0) {
         throw new Error('No hay datos para analizar');
       }
 
       // Análisis completo
       const analysis = await this.aiService.analyzeDriverData(registros, conductor);
-      
+
       // Detectar anomalías
       const anomalies = await this.aiService.detectAnomalies(registros);
-      
+
       // Generar resumen inteligente
       const smartSummary = await this.aiService.generateSmartSummary(registros, 'monthly');
-      
+
       const fullAnalysis = {
         timestamp: new Date().toISOString(),
         analysis,
@@ -204,13 +204,13 @@ export class AIAssistant {
         smartSummary,
         registrosCount: registros.length
       };
-      
+
       this.currentAnalysis = fullAnalysis;
       localStorage.setItem('ai_last_analysis', JSON.stringify(fullAnalysis));
-      
+
       this.displayAnalysis(fullAnalysis);
       this.hideLoading();
-      
+
     } catch (error) {
       console.error('Error in full analysis:', error);
       this.showError(error.message || 'Error al realizar análisis completo');
@@ -222,21 +222,21 @@ export class AIAssistant {
       this.showError('Configura la IA primero');
       return;
     }
-    
+
     try {
       this.showLoading('Generando predicciones...');
-      
+
       const registros = await this.dbService.getAllRegistros();
-      
+
       if (registros.length < 7) {
         throw new Error('Necesitas al menos 7 días de datos para generar predicciones');
       }
 
       const predictions = await this.aiService.generatePredictions(registros);
-      
+
       this.displayPredictions(predictions);
       this.hideLoading();
-      
+
     } catch (error) {
       console.error('Error generating predictions:', error);
       this.showError(error.message || 'Error al generar predicciones');
@@ -248,30 +248,30 @@ export class AIAssistant {
       this.showError('Configura la IA primero');
       return;
     }
-    
+
     try {
       // Añadir mensaje del usuario al chat
       this.addChatMessage('user', message);
-      
+
       // Mostrar indicador de escritura
       this.showTypingIndicator();
-      
+
       const registros = await this.dbService.getAllRegistros();
       const conductor = await this.dbService.getConductor();
-      
+
       const response = await this.aiService.chatWithAssistant(message, registros, conductor);
-      
+
       // Añadir respuesta de la IA
       this.addChatMessage('assistant', response);
-      
+
       // Guardar historial
       this.chatHistory.push(
         { role: 'user', content: message, timestamp: new Date() },
         { role: 'assistant', content: response, timestamp: new Date() }
       );
-      
+
       this.hideTypingIndicator();
-      
+
     } catch (error) {
       console.error('Error in chat:', error);
       this.addChatMessage('assistant', 'Lo siento, hubo un error al procesar tu mensaje. Inténtalo de nuevo.');
@@ -282,9 +282,9 @@ export class AIAssistant {
   displayAnalysis(analysisData) {
     const container = document.getElementById('ai-analysis-container');
     if (!container) return;
-    
+
     const { analysis, anomalies, smartSummary, timestamp } = analysisData;
-    
+
     container.innerHTML = `
       <div class="ai-analysis-content">
         <div class="analysis-header">
@@ -328,7 +328,7 @@ export class AIAssistant {
   displayPredictions(predictions) {
     const container = document.getElementById('ai-predictions-container');
     if (!container) return;
-    
+
     if (predictions.error) {
       container.innerHTML = `
         <div class="predictions-error">
@@ -339,7 +339,7 @@ export class AIAssistant {
       `;
       return;
     }
-    
+
     container.innerHTML = `
       <div class="predictions-content">
         <h3>🔮 Predicciones Inteligentes</h3>
@@ -379,26 +379,26 @@ export class AIAssistant {
         </div>
       </div>
     `;
-  }  addChatM
-essage(role, content) {
+  } addChatM
+  essage(role, content) {
     const chatContainer = document.getElementById('chat-messages');
     if (!chatContainer) return;
-    
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `chat-message ${role}`;
-    
-    const timestamp = new Date().toLocaleTimeString('es-ES', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+
+    const timestamp = new Date().toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit'
     });
-    
+
     messageDiv.innerHTML = `
       <div class="message-content">
         <div class="message-text">${this.formatMarkdown(content)}</div>
         <div class="message-time">${timestamp}</div>
       </div>
     `;
-    
+
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
@@ -406,7 +406,7 @@ essage(role, content) {
   showTypingIndicator() {
     const chatContainer = document.getElementById('chat-messages');
     if (!chatContainer) return;
-    
+
     const typingDiv = document.createElement('div');
     typingDiv.className = 'chat-message assistant typing';
     typingDiv.id = 'typing-indicator';
@@ -417,7 +417,7 @@ essage(role, content) {
         </div>
       </div>
     `;
-    
+
     chatContainer.appendChild(typingDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
@@ -431,7 +431,7 @@ essage(role, content) {
 
   formatMarkdown(text) {
     if (!text) return '';
-    
+
     return text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -442,7 +442,7 @@ essage(role, content) {
 
   formatAnomalies(anomalies) {
     if (!anomalies.alerts) return '<p>No se pudieron procesar las alertas</p>';
-    
+
     return anomalies.alerts.map(alert => `
       <div class="alert-item ${alert.priority?.toLowerCase()}">
         <div class="alert-header">

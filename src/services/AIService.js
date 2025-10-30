@@ -1,4 +1,19 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+// Importación condicional para evitar errores de build
+let GoogleGenerativeAI = null;
+
+// Función para cargar la librería dinámicamente
+async function loadGoogleAI() {
+  if (!GoogleGenerativeAI) {
+    try {
+      const module = await import('@google/generative-ai');
+      GoogleGenerativeAI = module.GoogleGenerativeAI;
+    } catch (error) {
+      console.warn('Google AI library not available:', error);
+      throw new Error('Google AI library could not be loaded');
+    }
+  }
+  return GoogleGenerativeAI;
+}
 
 export class AIService {
   constructor() {
@@ -17,7 +32,10 @@ export class AIService {
         throw new Error('API Key de Google AI Studio es requerida');
       }
 
-      this.genAI = new GoogleGenerativeAI(keyToUse);
+      // Cargar la librería dinámicamente
+      const GoogleAI = await loadGoogleAI();
+      
+      this.genAI = new GoogleAI(keyToUse);
       this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
       this.isInitialized = true;
       
