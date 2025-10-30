@@ -1156,4 +1156,4 @@ export class Historial {
     this.determineOptimizationStrategy(this.filteredRegistros.length);
     
     this.displayHistorial(this.filteredRegistros);
-  }
+  }}
